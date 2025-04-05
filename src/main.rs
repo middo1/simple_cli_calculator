@@ -118,7 +118,7 @@ fn main() {
         //         break;
         //     }
         // }
-        else if opt == 6 {
+        else if opt == 7 {
             println!("Enter the amount of courses you offer");
             let mut num_of_courses = String::new();
             let _ = io::stdin()
@@ -178,7 +178,7 @@ fn main() {
         //     let val = handle_operation_sep_values(space_sep_values, " ** ");
         //     println!("The result is {}\n \n", pow(val));
         // }
-         else if opt == 7 {
+         else if opt == 6 {
             println!(
                 "Enter the values you want to divide and seperate the value using ' ' and the like so: 1 + 2 * 3 / 4"
             );
