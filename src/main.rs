@@ -49,8 +49,8 @@ fn main() {
             println!("Do you want to continue? (Y, N)");
             let mut choice = String::new();
             let _ = io::stdin()
-            .read_line(&mut choice)
-            .expect("Na rubbish you dey do");
+                .read_line(&mut choice)
+                .expect("Na rubbish you dey do");
             if choice.trim() == "N" {
                 println!("\nThank you for using this CLI calculator\n");
                 break;
@@ -68,8 +68,8 @@ fn main() {
             println!("Do you want to continue? (Y, N)");
             let mut choice = String::new();
             let _ = io::stdin()
-            .read_line(&mut choice)
-            .expect("Na rubbish you dey do");
+                .read_line(&mut choice)
+                .expect("Na rubbish you dey do");
             if choice.trim() == "N" {
                 println!("\nThank you for using this CLI calculator\n");
                 break;
@@ -87,8 +87,8 @@ fn main() {
             println!("Do you want to continue? (Y, N)");
             let mut choice = String::new();
             let _ = io::stdin()
-            .read_line(&mut choice)
-            .expect("Na rubbish you dey do");
+                .read_line(&mut choice)
+                .expect("Na rubbish you dey do");
             if choice.trim() == "N" {
                 println!("\nThank you for using this CLI calculator\n");
                 break;
@@ -102,16 +102,16 @@ fn main() {
                 .read_line(&mut space_sep_values)
                 .expect("Na rubbish you dey do");
             let val = handle_operation_sep_values(space_sep_values, " / ");
-            println!("The result is {}\n \n", division(val));println!("Do you want to continue? (Y, N)");
+            println!("The result is {}\n \n", division(val));
+            println!("Do you want to continue? (Y, N)");
             let mut choice = String::new();
             let _ = io::stdin()
-            .read_line(&mut choice)
-            .expect("Na rubbish you dey do");
+                .read_line(&mut choice)
+                .expect("Na rubbish you dey do");
             if choice.trim() == "N" {
                 println!("\nThank you for using this CLI calculator\n");
                 break;
             }
-
         } else if opt == 5 {
             println!("Enter the amount of courses you offer");
             let mut num_of_courses = String::new();
@@ -154,8 +154,8 @@ fn main() {
             println!("Do you want to continue? (Y, N)");
             let mut choice = String::new();
             let _ = io::stdin()
-            .read_line(&mut choice)
-            .expect("Na rubbish you dey do");
+                .read_line(&mut choice)
+                .expect("Na rubbish you dey do");
             if choice.trim() == "N" {
                 println!("\nThank you for using this CLI calculator\n");
                 break;
@@ -170,7 +170,6 @@ fn main() {
                 .expect("Na rubbish you dey do");
             let val = handle_operation_sep_values(space_sep_values, " ** ");
             println!("The result is {}\n \n", pow(val));
-            
         } else {
             println!("Please enter one of the given options")
         }
