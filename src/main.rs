@@ -161,7 +161,8 @@ fn division(values: Vec<f64>) -> f64 {
 }
 
 fn cpga_calculator(total_grade_point: f64, total_credit_hours: f64) -> f64 {
-    total_grade_point / total_credit_hours
+    let raw_cgpa = total_grade_point / total_credit_hours
+    (raw_cgpa * 100).trunc() / 100 // Truncates value of cgpa to 2 decimal places
 }
 
 fn handle_space_sep_values(space_sep_values: String) -> Vec<String> {
