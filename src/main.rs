@@ -112,7 +112,8 @@ fn main() {
                 .read_line(&mut space_sep_values)
                 .expect("Na rubbish you dey do");
             let val = handle_space_sep_values(space_sep_values);
-            handle_values(val);
+            let res = handle_values(val);
+            println!("The result is {}\n \n", res);
         } else {
             println!("Please enter one of the given options")
         }
