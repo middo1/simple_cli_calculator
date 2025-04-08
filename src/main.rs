@@ -45,15 +45,21 @@ fn main() {
             let val = handle_space_sep_values(space_sep_values);
             let mut final_res = val.clone();
             let mut clean = 0;
+            if final_res[0] == "" {
+                panic!("Empty or Invalid Expression");
+            }
             'get_final: loop {
                 let mut p: usize = 0;
                 while p < final_res.len() {
                     if final_res[p].contains("(") {
                         final_res = handle_bodmas(final_res);
+                        if final_res[0] == "" {
+                            panic!("Empty or Invalid Expression");
+                        }
                         println!("{:?}", final_res)
                     } else {
                         clean += 1;
-                        println!("e enter");
+                        // println!("e enter");
                     }
                     p += 1;
                 }
