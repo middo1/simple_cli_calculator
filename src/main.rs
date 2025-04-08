@@ -56,7 +56,7 @@ fn main() {
                         if final_res[0] == "" {
                             panic!("Empty or Invalid Expression");
                         }
-                        println!("{:?}", final_res)
+                        // println!("{:?}", final_res)
                     } else {
                         clean += 1;
                         // println!("e enter");
@@ -70,7 +70,7 @@ fn main() {
                 }
                 // println!("final{:?}", final_res);
             }
-            println!("Final: {:?}", final_res);
+            // println!("Final: {:?}", final_res);
             let res = handle_values(final_res);
             println!("The result is {}\n \n", res);
             println!("Do you want to continue? (Y, N)");
@@ -140,7 +140,7 @@ fn main() {
                 .expect("Na rubbish you dey do");
             let val = handle_space_sep_values(space_sep_values);
             let mut final_res = val.clone();
-            println!("{:?}", final_res);
+            // println!("{:?}", final_res);
             let mut clean = 0;
             if final_res[0] == "" {
                 panic!("Empty or Invalid Expression");
@@ -153,7 +153,7 @@ fn main() {
                         if final_res[0] == "" {
                             panic!("Empty or Invalid Expression");
                         }
-                        println!("{:?}", final_res)
+                        // println!("{:?}", final_res)
                     } else {
                         clean += 1;
                         // println!("e enter");
