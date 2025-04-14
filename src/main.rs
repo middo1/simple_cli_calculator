@@ -132,7 +132,7 @@ fn main() {
             }
         } else if opt == 6 {
             println!(
-                "Enter the values you want to perform several operations and seperate the value using ' ' and the like so: 1 + 2 * 3 / 4 \nAnd you can also use brakets like so: (2 + 2) - ((4 - 2) / (2 + 3)) \nPlease make sure the operations are seperated with a whitespace from the bracket and the numbers \naAnd make sure your brakets are well closed"
+                "Enter the values you want to perform several operations and the like so: (2 + 2) - ((4 - 2) / (2 + 3)) ** (90(23 + 23)) \nAnd you can also use brakets like so: (2 + 2) - ((4 - 2) / (2 + 3)) \nPlease make sure the operations are seperated with a whitespace from the bracket and the numbers \naAnd make sure your brakets are well closed"
             );
             let mut space_sep_values = String::new();
             let _ = io::stdin()
@@ -230,7 +230,45 @@ fn cpga_calculator(total_grade_point: f64, total_credit_hours: f64) -> f64 {
 }
 
 fn handle_space_sep_values(space_sep_values: String) -> Vec<String> {
-    let values: Vec<String> = space_sep_values.split(" ").map(|f| f.trim().parse::<String>().expect("You entered an invalid input, please make sure that the values are integers and are seperated by a space")).collect();
+    let mut values: Vec<String> = space_sep_values
+        .split("")
+        .map(|f| {
+            f.trim().parse::<String>().expect(
+                "You entered an invalid input, please make sure that the values are integers",
+            )
+        })
+        .filter(|f| f != " " && f != "")
+        .collect();
+    let mut start: usize = 0;
+    let mut end: usize = 0;
+    while start < values.len() {
+        let mut target = "".to_string();
+        'num: loop {
+            if end < values.len() && check_num_or_oper(values[end].clone()){
+                target = target + &values[end].to_owned();
+            } else {
+                break 'num;
+            }
+            end += 1;
+        }
+        if values[start] == "*" && values[start] == values[start + 1] {
+            values.remove(start);
+            values.remove(start);
+            values.insert(start, "**".to_string());
+        }
+        println!("{:?}", values);
+        for _x in start..end {
+            values.remove(start);
+        }
+        println!("{:?}", values);
+        if target != "" {
+            values.insert(start, target.to_string());
+        }
+        println!("{:?}", values);
+        start += 1;
+        end = start;
+    }
+    println!("{:?}", values);
     return values;
 }
 
@@ -259,7 +297,7 @@ fn pow(values: Vec<f64>) -> f64 {
 
 fn handle_values(mut values: Vec<String>) -> f64 {
     let mut ptr: usize = 0;
-    let operations = ["**", "*", "/", "+", "-"];
+    let operations = ["**", "/", "*", ".", "+", "-"];
     // println!("{:?}", values);
     for operation in operations {
         'operation: loop {
@@ -273,11 +311,15 @@ fn handle_values(mut values: Vec<String>) -> f64 {
                         values[ptr - 1].parse::<f64>().unwrap(),
                         values[ptr + 1].parse::<f64>().unwrap(),
                     ]),
+                    "/" => division(vec![
+                        values[ptr - 1].parse::<f64>().unwrap(),
+                        values[ptr + 1].parse::<f64>().unwrap(),
+                    ]),
                     "*" => multiplication(vec![
                         values[ptr - 1].parse::<f64>().unwrap(),
                         values[ptr + 1].parse::<f64>().unwrap(),
                     ]),
-                    "/" => division(vec![
+                    "." => multiplication(vec![
                         values[ptr - 1].parse::<f64>().unwrap(),
                         values[ptr + 1].parse::<f64>().unwrap(),
                     ]),
@@ -328,65 +370,79 @@ fn handle_bodmas(mut values: Vec<String>) -> Vec<String> {
         return values;
     }
     while start < values.len() {
-        if values[start].contains("(") {
+        if values[start] == "(".to_string() {
             'find_end: loop {
                 if end == values.len() {
                     return vec!["".to_string()];
-                } else if values[end].contains("(") {
+                } else if values[end] == "(".to_string() {
                     start = end;
-                } else if values[end].contains(")") {
+                } else if values[end] == ")".to_string() {
                     break 'find_end;
                 }
                 end += 1;
             }
-            let (open_brackets, res_vec, close_brackets) =
-                handle_brakets(values[start..=end].to_vec());
-            let res = handle_values(res_vec);
+            let res = handle_values(values[start + 1..end].to_vec());
             for _x in start..=end {
                 values.remove(start);
             }
-            // println!("After removal: {:?}", values);
-            values.insert(
-                start,
-                open_brackets + res.to_string().trim() + close_brackets.trim(),
-            );
-            // start -= 1;
-            // println!("{:?}", values);
+            values.insert(start, res.to_string());
+            if start > 0 && check_num_or_oper(values[start - 1].clone()) {
+                println!("Na front{}", values[start - 1].clone());
+                values.insert(start, "*".to_string());
+                // end += 1;
+            }
+            println!("{:?}", values);
+            println!("{}", start);
+            if start < values.len() - 1 && check_num_or_oper(values[start].clone()) && check_num_or_oper(values[start+1].clone()) {
+                println!("Na back");
+                values.insert(start+1, "*".to_string());
+            }
+            println!("{:?}", values);
             end = start;
         }
         end += 1;
         start += 1;
     }
-    // println!("in handle bodmas: {:?}", values);
     values
 }
-fn handle_brakets(mut values: Vec<String>) -> (String, Vec<String>, String) {
-    let mut open_brackets = "".to_string();
-    let mut close_brackets = "".to_string();
-    for ch in values[0].chars() {
-        if ch == '(' {
-            open_brackets.insert(0, ch);
+fn check_num_or_oper(value: String) -> bool {
+    let nums =[
+        "0".to_string(),
+        "1".to_string(),
+        "2".to_string(),
+        "3".to_string(),
+        "4".to_string(),
+        "5".to_string(),
+        "6".to_string(),
+        "7".to_string(),
+        "8".to_string(),
+        "9".to_string(),
+    ];
+    if value.trim().len() > 1 {
+        if value.starts_with("-") {
+            println!("E enter {}", value);
+            for ch in value.trim_start_matches("-").chars() {
+                if !nums.contains(&ch.to_string()) {
+                    println!("{}", ch);
+                    return false;
+                }
+            }
+        } else if !value.starts_with("-") {
+            println!("e no enter{}", value);
+            for ch in value.trim_start_matches("-").chars() {
+                if !nums.contains(&ch.to_string()) {
+                    println!("{}", ch);
+                    return false;
+                }
+            }
+        }
+    } else {
+        for ch in value.chars() {
+            if !nums.contains(&ch.to_string()) {
+                println!("{}", ch);
+                return false;
+            }
         }
     }
-    for ch in values[values.len() - 1].chars() {
-        if ch == ')' {
-            close_brackets.insert(0, ch);
-        }
-    }
-    values.insert(0, values[0].trim_start_matches("(").to_string());
-    values.insert(
-        values.len() - 1,
-        values[values.len() - 1].trim_end_matches(")").to_string(),
-    );
-    // println!("After{:?}", values);
-    values.remove(1);
-    if values.len() > 1 {
-        values.remove(values.len() - 1);
-    }
-
-    (
-        open_brackets[1..open_brackets.len()].to_string(),
-        values,
-        close_brackets[1..close_brackets.len()].to_string(),
-    )
+    true
 }
